@@ -10,7 +10,7 @@ router = APIRouter()
 keyword_extractor = KeywordExtractor()
 
 @router.post("/", response_model=Keywords)
-async def get_keywords(
+def get_keywords(
     query: Query,
 ) -> str:
     """
@@ -19,4 +19,4 @@ async def get_keywords(
     :param query: Query from user.
     :return: Keywords from query.
     """
-    return await keyword_extractor.extract_keywords(input=query.query)
+    return keyword_extractor.extract_keywords(input=query.query)

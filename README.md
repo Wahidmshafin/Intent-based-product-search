@@ -1,4 +1,4 @@
-# backend
+# Intent Based Product Search
 
 This project was generated using fastapi_template.
 
@@ -14,11 +14,11 @@ poetry install
 poetry run python -m backend
 ```
 
-This will start the server on the configured host.
+This will start the server on the configured host. Remember, We are using Gunicorn for running the project, it can't be run on windows. If we must run it on windows, we need to setup linux subsystem for windows.
 
 You can find swagger documentation at `/api/docs`.
 
-## 1. Install any library (For example numpy)
+### Install any library (for example numpy)
 
 Simply run:
 

@@ -6,7 +6,8 @@ class KeywordExtractor:
     def __init__(self):
         self.llm = ChatOllama(
             model="qwen2.5:3b-instruct",
-            temperature=0
+            temperature=0,
+            base_url="http://ollama:11434" #http://localhost:11435
         )
         self.prompt = ChatPromptTemplate.from_messages(
             [
@@ -15,6 +16,7 @@ class KeywordExtractor:
             ]
         )
     
-    async def extract_keywords(self, input:str)->str:
+    def extract_keywords(self, input:str)->str:
         chain = self.prompt | self.llm
-        return await chain.invoke({"input":input}).content
+        response = chain.invoke({"input":input}).content
+        return {"response": response}
