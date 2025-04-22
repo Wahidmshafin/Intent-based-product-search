@@ -25,7 +25,7 @@ poetry add numpy
 ```
 
 - This command downloads and installs the latest compatible NumPy wheel into your project’s virtual environment.  
-- Poetry will automatically insert a line under `[tool.poetry.dependencies]` in **pyproject.toml** (and update your `poetry.lock`) for you. citeturn1search2  
+- Poetry will automatically insert a line under `[tool.poetry.dependencies]` in **pyproject.toml** (and update your `poetry.lock`) for you. 
 
 
 

@@ -4,7 +4,7 @@ echo "Starting Ollama server..."
 ollama serve &
 # Wait for Ollama HTTP API to respond
 echo "Waiting for Ollama server to be active..."
-sleep 2
+sleep 1
 
 # Pull the model if it isn’t already present
 if ! ollama list | grep -q 'qwen2.5:3b-instruct'; then
