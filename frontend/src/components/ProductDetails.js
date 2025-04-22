@@ -24,7 +24,7 @@ export default function ProductDetails({ product }) {
         
         {/* Product Info */}
         <div className="p-8 md:w-1/2">
-          <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
+          <h1 className="text-2xl text-gray-800 font-bold mb-2">{product.title}</h1>
           <div className="flex items-center mb-4">
             <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded">
               {product.category}
@@ -48,7 +48,7 @@ export default function ProductDetails({ product }) {
           <p className="text-indigo-600 text-2xl font-bold mb-6">${product.price}</p>
           <p className="text-gray-700 mb-6">{product.description}</p>
           
-          <div className="flex items-center mb-6">
+          <div className="flex text-gray-500 items-center mb-6">
             <button 
               onClick={() => setQuantity(q => Math.max(1, q - 1))}
               className="px-3 py-1 border border-gray-300 rounded-l-md"
