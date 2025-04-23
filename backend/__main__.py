@@ -33,9 +33,17 @@ def set_multiproc_dir() -> None:
     )
 
 
+def set_LangSmith() -> None:
+    """Setup the Langsmith environment variables"""
+    os.environ["LANGSMITH_TRACING"] = settings.LANGSMITH_TRACING
+    os.environ["LANGSMITH_API_KEY"] = settings.LANGSMITH_API_KEY
+    os.environ["LANGSMITH_ENDPOINT"] = settings.LANGSMITH_ENDPOINT
+    os.environ["LANGSMITH_PROJECT"] = settings.LANGSMITH_PROJECT
+
 def main() -> None:
     """Entrypoint of the application."""
     set_multiproc_dir()
+    set_LangSmith()
     if settings.reload:
         uvicorn.run(
             "backend.web.application:get_app",

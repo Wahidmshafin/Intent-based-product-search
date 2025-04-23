@@ -22,7 +22,7 @@ services:
       BACKEND_REDIS_HOST: backend-redis
 
   db:
-    image: postgres:16.3-bullseye
+    image: pgvector/pgvector:pg17
     hostname: backend-db
     environment:
       POSTGRES_PASSWORD: "backend"
@@ -49,10 +49,10 @@ services:
       timeout: 3s
       retries: 50
 
-  ollama:  # New service for running the Dockerfile in /ollama
+  ollamaLLM:  # New service for running the Dockerfile in /ollama
     image: ollama/ollama:latest
     pull_policy: always
-    container_name: ollama
+    container_name: ollamaLLM
     ports: ["11434:11434"] # will be accessible in http://localhost:11435
     volumes:
       - ./model_files:/model_files  # Mount the directory with the trained 
@@ -60,6 +60,19 @@ services:
     tty: true
     restart: unless-stopped
     entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
+
+  ollamaEmb:  # New service for running the Dockerfile in /ollama
+      image: ollama/ollama:latest
+      pull_policy: always
+      container_name: ollamaEmb
+      ports: ["11435:11434"] # will be accessible in http://localhost:11435
+      volumes:
+        - ./model_files:/model_files  # Mount the directory with the trained 
+        - ollama:/root/.ollama
+      tty: true
+      restart: unless-stopped
+      entrypoint: ["/bin/sh", "/model_files/run_ollama_emb.sh"]
+
 
 volumes:
   backend-db-data:

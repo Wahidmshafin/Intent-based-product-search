@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator.instrumentation import (
     PrometheusFastApiInstrumentator,
 )
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from backend.db.meta import meta
@@ -37,6 +38,7 @@ async def _create_tables() -> None:  # pragma: no cover
     load_all_models()
     engine = create_async_engine(str(settings.db_url))
     async with engine.begin() as connection:
+        await connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
         await connection.run_sync(meta.create_all)
     await engine.dispose()
 

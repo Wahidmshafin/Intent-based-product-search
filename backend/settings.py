@@ -54,6 +54,12 @@ class Settings(BaseSettings):
     redis_pass: Optional[str] = None
     redis_base: Optional[int] = None
 
+    # Langsmith setup
+    LANGSMITH_TRACING: str = ""
+    LANGSMITH_API_KEY: str = ""
+    LANGSMITH_ENDPOINT: str = ""
+    LANGSMITH_PROJECT: str =""
+
     # This variable is used to define
     # multiproc_dir. It's required for [uvi|guni]corn projects.
     prometheus_dir: Path = TEMP_DIR / "prom"

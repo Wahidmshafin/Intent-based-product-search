@@ -12,6 +12,9 @@ if ! ollama list | grep -q 'qwen2.5:3b-instruct'; then
   ollama pull qwen2.5:3b-instruct
 fi
 
+
+
 # Finally, run the model in the foreground to keep the container alive
 echo "Running qwen2.5:3b-instruct..."
 ollama run qwen2.5:3b-instruct 
+
