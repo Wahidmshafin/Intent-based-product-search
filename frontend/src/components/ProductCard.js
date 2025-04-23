@@ -2,26 +2,59 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
+  const hoverTimer = useRef(null)
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    setShowTooltip(false)
+    clearTimeout(hoverTimer.current)
+  }
 
   const handleMouseMove = (e) => {
+    // Update position immediately
     setPosition({
-      x: e.clientX + 15, // 15px offset from cursor
+      x: e.clientX + 15,
       y: e.clientY + 15
     })
+
+    // Hide tooltip when mouse moves
+    setShowTooltip(false)
+    
+    // Clear any existing timer
+    clearTimeout(hoverTimer.current)
+    
+    // Start new timer to show tooltip after 1 second of no movement
+    hoverTimer.current = setTimeout(() => {
+      if (isHovered) {
+        setShowTooltip(true)
+      }
+    }, 500)
   }
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      clearTimeout(hoverTimer.current)
+    }
+  }, [])
 
   return (
     <div className="relative">
       <Link href={`/products/${product.id}`} passHref>
         <div 
           className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer h-full flex flex-col"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
         >
           {/* Product Image */}
@@ -46,10 +79,12 @@ export default function ProductCard({ product }) {
         </div>
       </Link>
 
-      {/* OS-style hover tooltip */}
+      {/* OS-style hover tooltip with delayed appearance */}
       {isHovered && (
         <div 
-          className="fixed z-50 bg-white/40 backdrop-blur-sm shadow-xl rounded-md p-4 max-w-xs border border-gray-200 pointer-events-none"
+          className={`fixed z-50 bg-white/40 backdrop-blur-sm shadow-xl rounded-md p-4 max-w-xs border border-gray-200 pointer-events-none transition-opacity duration-200 ${
+            showTooltip ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{
             left: `${position.x}px`,
             top: `${position.y}px`,

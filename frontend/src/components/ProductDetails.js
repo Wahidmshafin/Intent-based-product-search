@@ -24,7 +24,7 @@ export default function ProductDetails({ product }) {
         
         {/* Product Info */}
         <div className="p-8 md:w-1/2">
-          <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
+          <h1 className="text-2xl text-gray-700 font-bold mb-2">{product.title}</h1>
           <div className="flex items-center mb-4">
             <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded">
               {product.category}
