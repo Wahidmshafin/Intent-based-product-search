@@ -22,3 +22,15 @@ class QueryExpension(BaseModel):
     expended_query: str = Field(description="The enriched query including synonyms and attributes.")
     product_title: str = Field(description="A concise, SEO-friendly title for the top maching product")
     product_detail: str = Field(description="A detailed description including key feature, specification and user case")
+
+    def to_string(self) -> str:
+        """Generates a formatted string representation of the object."""
+        # You can format the string however you like
+        return f"Expanded Query:{self.expended_query}\nProduct Title:{self.product_title}->Product Detail : {self.product_detail}"
+
+class Vectors(BaseModel):
+    """User query."""
+
+    id: int
+    name: str
+    fulldescription: str

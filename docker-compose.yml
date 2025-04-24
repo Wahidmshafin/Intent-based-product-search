@@ -49,10 +49,10 @@ services:
       timeout: 3s
       retries: 50
 
-  ollamaLLM:  # New service for running the Dockerfile in /ollama
+  ollama:  # New service for running the Dockerfile in /ollama
     image: ollama/ollama:latest
     pull_policy: always
-    container_name: ollamaLLM
+    container_name: ollama
     ports: ["11434:11434"] # will be accessible in http://localhost:11435
     volumes:
       - ./model_files:/model_files  # Mount the directory with the trained 
@@ -60,18 +60,6 @@ services:
     tty: true
     restart: unless-stopped
     entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
-
-  ollamaEmb:  # New service for running the Dockerfile in /ollama
-      image: ollama/ollama:latest
-      pull_policy: always
-      container_name: ollamaEmb
-      ports: ["11435:11434"] # will be accessible in http://localhost:11435
-      volumes:
-        - ./model_files:/model_files  # Mount the directory with the trained 
-        - ollama:/root/.ollama
-      tty: true
-      restart: unless-stopped
-      entrypoint: ["/bin/sh", "/model_files/run_ollama_emb.sh"]
 
 
 volumes:

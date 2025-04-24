@@ -12,7 +12,10 @@ if ! ollama list | grep -q 'qwen2.5:3b-instruct'; then
   ollama pull qwen2.5:3b-instruct
 fi
 
-
+if ! ollama list | grep -q 'nomic-embed-text'; then
+  echo "Pulling nomic-embed-text..."
+  ollama pull nomic-embed-text
+fi
 
 # Finally, run the model in the foreground to keep the container alive
 echo "Running qwen2.5:3b-instruct..."

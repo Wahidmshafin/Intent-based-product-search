@@ -21,5 +21,5 @@ class ProductTable(Base):
     description: Mapped[str] = mapped_column(String())
     name: Mapped[str] = mapped_column(String())
     fulldescription: Mapped[str] = mapped_column(String())
-    embedding: Mapped[list[float]] = mapped_column(Vector())
+    embedding: Mapped[list[float]] = mapped_column(Vector(768))
     

@@ -2,6 +2,7 @@ from langchain_ollama import ChatOllama, OllamaEmbeddings, OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 from langsmith import traceable
 from backend.web.api.search.schema import Keywords, QueryExpension
+from backend.db.dao.product_dao import ProductDAO
 
 class SearchPipeline:
 
@@ -10,14 +11,14 @@ class SearchPipeline:
         self.embedding = OllamaEmbeddings(
             model = "nomic-embed-text",            
             keep_alive= -1,
-            base_url="http://ollamaEmb:11434" #http://localhost:11435
+            base_url="http://ollama:11434" #http://localhost:11435
         )
 
         self.llm = ChatOllama(
             model="qwen2.5:3b-instruct",
             temperature=0,
             keep_alive= -1,
-            base_url="http://ollamaLLM:11434" #http://localhost:11435
+            base_url="http://ollama:11434" #http://localhost:11435
         )
 
         self.keyword_prompt = ChatPromptTemplate.from_messages(
@@ -95,17 +96,17 @@ class SearchPipeline:
         model = self.llm.with_structured_output(Keywords)
         chain = self.keyword_prompt | model
         response = chain.invoke({"input":input}).response
-        return {"response": response}
+        return response
 
     def query_expension(self, input:str)->str:
         model = self.llm.with_structured_output(QueryExpension)
         chain = self.query_expension_prompt | model
         response = chain.invoke({"input":input})
-        return response.model_dump()
+        return response.to_string()
     
-    def generate_embedding(self, input:str):
-        emb = self.embedding.embed_query(input)
-        print("==========================")
-        return {"response":len(emb)}
+    def generate_embedding(self, input:str)->str:
+        return self.embedding.embed_query(input)
+        
+
     
 # Blue color Samsung smartphone with 8GB RAM and 256GB ROM and it should have a big screen and should be waterproof.
