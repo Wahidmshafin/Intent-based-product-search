@@ -24,8 +24,15 @@ async def hybrid_search(
     :return: Keywords from query.
     """
     keywords = search_pipeline.extract_keywords(query)
+    # keywords = ["Big", "Shoes"]
 
     better_query = search_pipeline.query_expension(query)
+
+    # better_query = """
+    # expended_query: "medium men's sports sneakers
+    # product_title: Men's Medium Sports Shoes,
+    # product_detail: • Breathable mesh upper for all-day comfort\n• Lightweight cushioned sole for added durability and flexibility\n• Durable rubber outsole for traction on various surfaces\n• Made from breathable, moisture-wicking fabric to keep feet dry\n• Ideal for running, casual wear, and sports activities\n• Available in black, white, and navy colors
+    # """
     
     embedding = search_pipeline.generate_embedding(better_query)
     # print(embedding)

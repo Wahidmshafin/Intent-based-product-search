@@ -32,6 +32,7 @@ class SearchPipeline:
                 Extract the keywords present in the input text.
                 • Return only the keywords, separated by commas.
                 • Do not add any extra words, explanations, or formatting.
+                • Do not return any empty list.
 
                 ### Examples:
 

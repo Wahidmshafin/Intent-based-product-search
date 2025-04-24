@@ -43,26 +43,23 @@ class ProductDAO:
         WITH semantic_search AS (
             SELECT
                 id,
-                -- Calculate semantic rank
                 RANK () OVER (ORDER BY embedding <=> :embeddings) AS rank
             FROM product_table
-            ORDER BY embedding <=> :embeddings -- Order by for LIMIT
+            ORDER BY embedding <=> :embeddings 
             LIMIT :limit
         ),
         keyword_search AS (
             SELECT
                 id,
-                -- Calculate keyword rank
                 RANK () OVER (ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC) AS rank
             FROM
                 product_table,
-                to_tsquery('english',array_to_string(:keywords, ' | ')) query
+                to_tsquery('english',array_to_string(CAST(:keywords AS text[]), ' | ')) query
             WHERE
-                to_tsvector('english', fulldescription) @@ query -- Optional but recommended filter
-            ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC -- Order by for LIMIT
+                to_tsvector('english', fulldescription) @@ query
+            ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC 
             LIMIT :limit
         ),
-        -- Combine results from both searches and calculate the hybrid score
         combined_results AS (
             SELECT
                 COALESCE(semantic_search.id, keyword_search.id) AS id,
@@ -71,21 +68,20 @@ class ProductDAO:
             FROM semantic_search
             FULL OUTER JOIN keyword_search ON semantic_search.id = keyword_search.id
         )
-        -- Final select: Join combined results with product_table to get name and fulldescription
         SELECT
             p.id,
-            p.name,           -- Added name
-            p.fulldescription,-- Added fulldescription
+            p.name,           
+            p.fulldescription
         FROM combined_results cr
-        JOIN product_table p ON cr.id = p.id -- Join back to get other columns
+        JOIN product_table p ON cr.id = p.id 
         ORDER BY cr.score DESC
-        LIMIT :count; -- Apply final limit based on hybrid score
+        LIMIT :limit; 
         """)
 
         products = await self.session.execute(statement=stmt,params={
         "embeddings": str(embedding), # Ensure embedding is passed as a string representation if needed by your driver
-        "keywords": keywords,
         "limit": limit,
+        "keywords": keywords,
         "k": k
         })
         return list(products.fetchall())
