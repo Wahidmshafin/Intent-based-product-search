@@ -14,7 +14,9 @@ poetry install
 poetry run python -m backend
 ```
 
-This will start the server on the configured host. You can find swagger documentation at `/api/docs`.
+This will start the server on the configured host. Remember, We are using Gunicorn for running the project, it can't be run on windows. 
+
+You can find swagger documentation at `/api/docs`.
 
 ### Install any library (for example numpy)
 

@@ -2,6 +2,7 @@ from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
+from sqlalchemy import text
 
 
 async def get_db_session(request: Request) -> AsyncGenerator[AsyncSession, None]:
@@ -12,7 +13,6 @@ async def get_db_session(request: Request) -> AsyncGenerator[AsyncSession, None]
     :yield: database session.
     """
     session: AsyncSession = request.app.state.db_session_factory()
-
     try:
         yield session
     finally:

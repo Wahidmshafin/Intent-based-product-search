@@ -22,7 +22,7 @@ services:
       BACKEND_REDIS_HOST: backend-redis
 
   db:
-    image: postgres:16.3-bullseye
+    image: pgvector/pgvector:pg17
     hostname: backend-db
     environment:
       POSTGRES_PASSWORD: "backend"
@@ -60,6 +60,7 @@ services:
     tty: true
     restart: unless-stopped
     entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
+
 
 volumes:
   backend-db-data:
