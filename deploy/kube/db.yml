@@ -53,7 +53,7 @@ metadata:
   namespace: backend
 data:
   postgres_user: YmFja2VuZAo=
-  postgres_password: YmFja2VuZAo=
+  postgres_password: YmFja2VuZAo=  
 ---
 apiVersion: v1
 kind: Service
