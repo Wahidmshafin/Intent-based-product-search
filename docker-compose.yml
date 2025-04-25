@@ -60,7 +60,16 @@ services:
     tty: true
     restart: unless-stopped
     entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
-
+  
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/prometheus.yml
+      - ./myrules.yml:/myrules.yml
+    command:
+      - '--config.file=/prometheus.yml'
 
 volumes:
   backend-db-data:

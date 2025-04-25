@@ -7,7 +7,7 @@ import pandas as pd
 from backend.db.dao.product_dao import ProductDAO
 from backend.db.models.dummy_model import ProductTable
 from backend.web.api.search.rag import SearchPipeline
-from backend.web.api.productTable.schema import ProductUpload, Products
+from backend.web.api.productTable.schema import ProductUpload, Products,ProductItem
 
 router = APIRouter()
 search_pipeline = SearchPipeline()
@@ -42,11 +42,11 @@ async def create_product_models(
     return {"response":"Done"}
 
 
-@router.get("/all", response_model=List[Products])
+@router.get("/all", response_model=List[ProductItem])
 async def get_all_products(
     limit: int=8,
     product_dao: ProductDAO = Depends(),
-) -> List[Products]:
+) -> List[ProductItem]:
     """
     Creates dummy model in the database.
 

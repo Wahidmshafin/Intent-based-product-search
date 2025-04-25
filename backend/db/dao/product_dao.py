@@ -35,7 +35,7 @@ class ProductDAO:
 
         return list(products.scalars().fetchall())
     
-    async def hybrid_search(self, embedding:list[float], keywords:list[str], limit: int, k:float=60, count:int = 10):
+    async def hybrid_search(self, embedding:list[float], keywords:str, limit: int, k:float=60, count:int = 4):
         """
         Perform Hybrid search on pgvector database.
         """
@@ -54,7 +54,7 @@ class ProductDAO:
                 RANK () OVER (ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC) AS rank
             FROM
                 product_table,
-                to_tsquery('english',array_to_string(CAST(:keywords AS text[]), ' | ')) query
+                websearch_to_tsquery('english', :keywords) AS query
             WHERE
                 to_tsvector('english', fulldescription) @@ query
             ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC 
@@ -75,13 +75,14 @@ class ProductDAO:
         FROM combined_results cr
         JOIN product_table p ON cr.id = p.id 
         ORDER BY cr.score DESC
-        LIMIT :limit; 
+        LIMIT :cnt; 
         """)
 
         products = await self.session.execute(statement=stmt,params={
         "embeddings": str(embedding), # Ensure embedding is passed as a string representation if needed by your driver
         "limit": limit,
         "keywords": keywords,
-        "k": k
+        "k": k,
+        "cnt":count
         })
         return list(products.fetchall())

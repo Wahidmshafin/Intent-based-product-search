@@ -8,7 +8,6 @@ deploy/
 __pycache__/
 *.py[cod]
 *$py.class
-
 # C extensions
 *.so
 
@@ -109,6 +108,8 @@ celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
+
+*.gguf
 
 # Environments
 .env

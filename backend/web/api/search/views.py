@@ -1,4 +1,5 @@
 from typing import List
+import json
 
 from fastapi import APIRouter
 from fastapi.param_functions import Depends
@@ -23,10 +24,10 @@ async def hybrid_search(
     :param query: Query from user.
     :return: Keywords from query.
     """
-    keywords = search_pipeline.extract_keywords(query)
+    # keywords = search_pipeline.extract_keywords(query)
     # keywords = ["Big", "Shoes"]
 
-    better_query = search_pipeline.query_expension(query)
+    # better_query = search_pipeline.query_expension(query)
 
     # better_query = """
     # expended_query: "medium men's sports sneakers
@@ -34,13 +35,21 @@ async def hybrid_search(
     # product_detail: • Breathable mesh upper for all-day comfort\n• Lightweight cushioned sole for added durability and flexibility\n• Durable rubber outsole for traction on various surfaces\n• Made from breathable, moisture-wicking fabric to keep feet dry\n• Ideal for running, casual wear, and sports activities\n• Available in black, white, and navy colors
     # """
     
-    embedding = search_pipeline.generate_embedding(better_query)
+    ner = search_pipeline.generate_test_rag(query)["content"]
+    print(ner)
+
+    embedding = search_pipeline.generate_embedding(ner)
+    keywords = ""
+    ner_dict = json.loads(ner)
+    for key, value in ner_dict.items():
+        keywords = keywords + " "+ str(value)
     # print(embedding)
     return await product_dao.hybrid_search(
         embedding=embedding,
         keywords=keywords,
-        limit=4,
-        k=60
+        limit=10,
+        k=60,
+        count=5
     )
     
 
