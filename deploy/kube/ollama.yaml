@@ -20,6 +20,10 @@ spec:
         - name: file-storage
           persistentVolumeClaim:
             claimName: ollama-file-persistent-volume-claim
+        - name: script
+          configMap:
+            name: ollama-script
+            defaultMode: 0755
       containers:
         - name: ollama
           image: ollama/ollama:latest
@@ -30,7 +34,10 @@ spec:
             - name: file-storage
               mountPath: /model_files
               subPath: ollama-file
-          entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
+            - name: script
+              mountPath: /model_files/run_ollama.sh
+              subPath: run_ollama.sh
+          command: ["/bin/sh", "/model_files/run_ollama.sh"]
           ports:
             - containerPort: 11434
 ---
@@ -71,3 +78,32 @@ spec:
       targetPort: 11434
 
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ollama-script
+data:
+  run_ollama.sh: |
+    #!/bin/bash
+
+    echo "Starting Ollama server..."
+    ollama serve &
+    # Wait for Ollama HTTP API to respond
+    echo "Waiting for Ollama server to be active..."
+    sleep 1
+
+    # Pull the model if it isn’t already present
+    if ! ollama list | grep -q 'qwen2.5:3b-instruct'; then
+      echo "Pulling qwen2.5:3b-instruct..."
+      ollama pull qwen2.5:3b-instruct
+    fi
+
+    if ! ollama list | grep -q 'nomic-embed-text'; then
+      echo "Pulling nomic-embed-text..."
+      ollama pull nomic-embed-text
+    fi
+
+    # Finally, run the model in the foreground to keep the container alive
+    echo "Running qwen2.5:3b-instruct..."
+    ollama run qwen2.5:3b-instruct 
+
