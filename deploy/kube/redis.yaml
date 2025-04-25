@@ -23,7 +23,7 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 3
           env:
-            - name: ALLOW_EMPTY_PASSWORD: 
+            - name: ALLOW_EMPTY_PASSWORD 
               value: "yes"
           resources:
             limits:

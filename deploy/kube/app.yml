@@ -5,7 +5,7 @@ metadata:
   namespace: backend
   name: backend-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend-app
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: wahidmshafin/backend:latest
+          image: wahidmshafin/backend:v1
           readinessProbe:
             httpGet:
               path: /api/health
@@ -26,6 +26,8 @@ spec:
           env:
             - name: BACKEND_HOST
               value: "0.0.0.0"
+            - name: BACKEND_WORKERS_COUNT
+              value: "10"
             - name: BACKEND_DB_HOST
               value: "backend-db-service"
             - name: BACKEND_DB_PORT

@@ -30,7 +30,7 @@ spec:
             - name: file-storage
               mountPath: /model_files
               subPath: ollama-file
-          entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
+          command: ["/bin/sh", "/model_files/run_ollama.sh"]
           ports:
             - containerPort: 11434
 ---
@@ -38,7 +38,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ollama-model-persistent-volume-claim
-  namespace: resource
+  namespace: backend
 spec:
   accessModes: 
     - ReadWriteOnce
@@ -50,7 +50,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ollama-file-persistent-volume-claim
-  namespace: resource
+  namespace: backend
 spec:
   accessModes: 
     - ReadWriteOnce
