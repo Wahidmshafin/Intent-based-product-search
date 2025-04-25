@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: backend:latest
+          image: wahidmshafin/backend:latest
           readinessProbe:
             httpGet:
               path: /api/health
@@ -26,12 +26,25 @@ spec:
           env:
             - name: BACKEND_HOST
               value: "0.0.0.0"
-            - name: BACKEND_WORKERS_COUNT
-              value: "10"
             - name: BACKEND_DB_HOST
               value: "backend-db-service"
+            - name: BACKEND_DB_PORT
+              value: "5432"
+            - name: BACKEND_DB_BASE
+              value: "backend"
             - name: BACKEND_REDIS_HOST
               value: "backend-redis-service"
+              env:
+            - name: BACKEND_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backend-credential
+                  key: postgres_user
+            - name: BACKEND_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: backend-credential
+                  key: postgres_password
           resources:
             limits:
               memory: "200Mi"
@@ -39,6 +52,15 @@ spec:
           ports:
             - containerPort: 8000
               name: api-port
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-credential
+  namespace: backend
+data:
+  postgres_user: YmFja2VuZAo=
+  postgres_password: YmFja2VuZAo=
 ---
 apiVersion: v1
 kind: Service
