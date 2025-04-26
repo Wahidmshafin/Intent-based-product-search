@@ -21,7 +21,7 @@ class SearchPipeline:
         #     base_url="http://ollama:11434" #http://localhost:11435
         # )
         self.fune_tuned_llm = ChatOllama(
-            model="ner",
+            model="ecommerce-ner-model",
             temperature=0,
             keep_alive= -1,
             base_url="http://ollama:11434" #http://localhost:11435
