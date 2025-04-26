@@ -39,3 +39,8 @@ class Vectors(BaseModel):
     brand: Optional[str] = None
     description: Optional[str] = None
 
+class Historys(BaseModel):
+    """User query."""
+
+    id: int
+    query: str

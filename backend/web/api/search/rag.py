@@ -2,7 +2,7 @@ from langchain_ollama import ChatOllama, OllamaEmbeddings, OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 from langsmith import traceable
 from backend.web.api.search.schema import Keywords, QueryExpension
-from backend.db.dao.product_dao import ProductDAO
+from backend.db.dao.history_dao import HistoryDAO
 
 class SearchPipeline:
 
@@ -14,6 +14,8 @@ class SearchPipeline:
             base_url="http://ollama:11434" #http://localhost:11435
         )
 
+        
+
         # self.llm = ChatOllama(
         #     model="qwen2.5:3b-instruct",
         #     temperature=0,
@@ -21,7 +23,7 @@ class SearchPipeline:
         #     base_url="http://ollama:11434" #http://localhost:11435
         # )
         self.fune_tuned_llm = ChatOllama(
-            model="ner",
+            model="ecommerce-ner-model",
             temperature=0,
             keep_alive= -1,
             base_url="http://ollama:11434" #http://localhost:11435
@@ -39,6 +41,7 @@ class SearchPipeline:
     def generate_embedding(self, input:str)->str:
         return self.embedding.embed_query(input)
         
+
     def generate_test_rag(self, input:str)->str:
         chain = self.fine_promt | self.fune_tuned_llm
         response = chain.invoke({"input":input})

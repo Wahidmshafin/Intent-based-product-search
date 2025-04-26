@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.sql.sqltypes import String
+from sqlalchemy.sql.sqltypes import String,Integer
 from pgvector.sqlalchemy import Vector
+from sqlalchemy.dialects.postgresql import ARRAY
 from backend.db.base import Base
 
 
@@ -25,4 +26,12 @@ class ProductTable(Base):
     price: Mapped[str] = mapped_column(String(),nullable=True)
     spec: Mapped[str] = mapped_column(String(),nullable=True)
     embedding: Mapped[list[float]] = mapped_column(Vector(768))
+    
+class HistoryTable(Base):
+    """Product Table"""
+    __tablename__ = "history_table"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    query:Mapped[str] = mapped_column(String(),nullable=False)
+    result:Mapped[list[int]] = mapped_column(ARRAY(Integer))
+    feedback: Mapped[int] = mapped_column()
     

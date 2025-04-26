@@ -32,9 +32,17 @@ class ProductDAO:
         products = await self.session.execute(
             select(ProductTable).limit(limit),
         )
-
+    
         return list(products.scalars().fetchall())
     
+    async def get_products_fromID(self, ids:list[int], limit:int)->List[ProductTable]:
+        if not ids:
+            return []
+        products = await self.session.execute(
+            select(ProductTable).where(ProductTable.id.in_(ids)).limit(limit=limit)
+            )
+        return products.scalars().fetchall()
+
     async def hybrid_search(self, embedding:list[float], keywords:str, limit: int, k:float=60, count:int = 4):
         """
         Perform Hybrid search on pgvector database.
