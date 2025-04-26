@@ -8,13 +8,15 @@ from backend.db.dao.product_dao import ProductDAO
 from backend.db.models.dummy_model import ProductTable
 from backend.web.api.search.rag import SearchPipeline
 from backend.web.api.productTable.schema import ProductUpload, Products,ProductItem
+from datasets import load_dataset
+
 
 router = APIRouter()
 search_pipeline = SearchPipeline()
 
 @router.post("/upload", response_model=ProductUpload)
 async def create_product_models(
-    limit: int = 10,
+    limit: int = 50,
     offset: int = 0,
     product_dao: ProductDAO = Depends(),
 ) -> ProductUpload:
@@ -26,19 +28,69 @@ async def create_product_models(
     :param product_dao: DAO for productTable models.
     :return: If products uploaded or not.
     """
-    df = pd.read_csv("files/productsfull.csv")
+    ds = load_dataset("wdc/products-2017","cameras_small")
     cnt=0
-    for index,row in df.iterrows():
+    for i, example in enumerate(ds['train'].select(range(limit))):
         await product_dao.add_product(
-            colorname=str(row["colorname"]),
-            description=str(row["description"]),
-            name=str(row["name"]),
-            fulldescription=str(row["fulldescription"]),
-            embedding= search_pipeline.generate_embedding(str(row["name"])+"\n"+str(row["fulldescription"]))
-                                )
-        cnt = cnt+1
-        if cnt==limit:
-            break
+            new_id = example["id_left"],
+            category = example["category_left"],
+            brand = example["brand_left"],
+            title = example["title_left"],
+            description = example["description_left"],
+            price = example["price_left"],
+            spec = example["specTableContent_left"],
+            embedding = search_pipeline.generate_embedding(
+    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+)
+        )
+        print(cnt)
+        cnt=cnt+1
+    ds = load_dataset("wdc/products-2017","watches_small")
+    cnt=0
+    for i, example in enumerate(ds['train'].select(range(limit))):
+        await product_dao.add_product(
+            new_id = example["id_left"],
+            category = example["category_left"],
+            brand = example["brand_left"],
+            title = example["title_left"],
+            description = example["description_left"],
+            price = example["price_left"],
+            spec = example["specTableContent_left"],
+            embedding = search_pipeline.generate_embedding(
+    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+)
+        )
+        print(cnt)
+        cnt=cnt+1
+    ds = load_dataset("wdc/products-2017","computers_small")
+    cnt=0
+    for i, example in enumerate(ds['train'].select(range(limit))):
+        await product_dao.add_product(
+            new_id = example["id_left"],
+            category = example["category_left"],
+            brand = example["brand_left"],
+            title = example["title_left"],
+            description = example["description_left"],
+            price = example["price_left"],
+            spec = example["specTableContent_left"],
+            embedding = search_pipeline.generate_embedding(
+    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+)
+        )
+        print(cnt)
+        cnt=cnt+1
+    
+    # for index,row in df.iterrows():
+    #     await product_dao.add_product(
+    #         colorname=str(row["colorname"]),
+    #         description=str(row["description"]),
+    #         name=str(row["name"]),
+    #         fulldescription=str(row["fulldescription"]),
+    #         embedding= search_pipeline.generate_embedding(str(row["name"])+"\n"+str(row["fulldescription"]))
+    #                             )
+    #     cnt = cnt+1
+    #     if cnt==limit:
+    #         break
     return {"response":"Done"}
 
 

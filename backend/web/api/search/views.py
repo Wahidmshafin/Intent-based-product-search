@@ -5,18 +5,20 @@ from fastapi import APIRouter
 from fastapi.param_functions import Depends
 
 from backend.db.dao.product_dao import ProductDAO
-from backend.web.api.search.schema import Keywords, Query, QueryExpension, Vectors
+from backend.db.dao.history_dao import HistoryDAO
+from backend.web.api.search.schema import Keywords, Query, QueryExpension, Vectors, Historys
 from backend.web.api.search.rag import SearchPipeline
 from backend.settings import settings
 
 router = APIRouter()
 search_pipeline = SearchPipeline()
-
+history_dao = HistoryDAO()
 
 @router.post("/", response_model=List[Vectors])
 async def hybrid_search(
     query: Query,
     product_dao: ProductDAO = Depends(),
+    history_dao: HistoryDAO = Depends()
 ) -> List[Vectors]:
     """
     Return keywords from given query
@@ -44,14 +46,38 @@ async def hybrid_search(
     for key, value in ner_dict.items():
         keywords = keywords + " "+ str(value)
     # print(embedding)
-    return await product_dao.hybrid_search(
+    response = await product_dao.hybrid_search(
         embedding=embedding,
         keywords=keywords,
         limit=10,
         k=60,
         count=5
     )
-    
+    ids = []
+    for res in response:
+        ids.append(res.id)
+    await history_dao.add_history(query=query.query,result=ids, feedback=0)
+    return response
+
+
+@router.post("/history", response_model=List[Historys])
+async def get_history(
+    limit:int,
+    history_dao: HistoryDAO = Depends()
+)->List[Historys]:
+    """
+    """
+    return await history_dao.get_all_history(limit=limit)
+
+@router.put("/feedback")
+async def get_history(
+    id:int,
+    feedback: int,
+    history_dao: HistoryDAO = Depends()
+):
+    """
+    """
+    return await history_dao.update_feedback(id,feedback)
 
 # @router.post("/", response_model=Keywords)
 # def get_keywords(

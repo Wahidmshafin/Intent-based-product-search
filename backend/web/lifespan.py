@@ -41,7 +41,7 @@ async def _create_tables() -> None:  # pragma: no cover
         await connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
         await connection.run_sync(meta.create_all)
         await connection.execute(text("CREATE INDEX IF NOT EXISTS idx_hnsw ON product_table USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 64);"))
-        await connection.execute(text("CREATE INDEX IF NOT EXISTS idx_gin ON product_table USING gin (to_tsvector('english', fulldescription));"))
+        await connection.execute(text("CREATE INDEX IF NOT EXISTS idx_gin ON product_table USING gin (to_tsvector('english', description));"))
     await engine.dispose()
 
 

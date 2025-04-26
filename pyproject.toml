@@ -33,6 +33,7 @@ langchain-ollama = "^0.3.2"
 langsmith = "^0.3.33"
 pandas = "^2.2.3"
 pgvector = "^0.4.0"
+datasets = "^3.5.0"
 
 
 [tool.poetry.group.dev.dependencies]

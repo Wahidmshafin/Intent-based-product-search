@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict, Field
+from typing import Optional
 
 
 class Keywords(BaseModel):
@@ -32,5 +33,14 @@ class Vectors(BaseModel):
     """User query."""
 
     id: int
-    name: str
-    fulldescription: str
+
+    title: Optional[str] = None
+    category: Optional[str] = None
+    brand: Optional[str] = None
+    description: Optional[str] = None
+
+class Historys(BaseModel):
+    """User query."""
+
+    id: int
+    query: str

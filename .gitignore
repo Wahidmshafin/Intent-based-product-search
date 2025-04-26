@@ -143,6 +143,7 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+venv_finetuning/
 
 __pycache__/
 venv_finetuning/
