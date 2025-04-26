@@ -1,0 +1,3 @@
+[submodule "mlops/llama.cpp"]
+path = mlops/llama.cpp
+url  = https://github.com/ggerganov/llama.cpp.git

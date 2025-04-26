@@ -1,0 +1,37 @@
+# Core ML frameworks
+torch
+torchvision
+triton
+ninja
+
+# Performance & quantization
+xformers
+flash-attn
+bitsandbytes
+
+# Fine-tuning libraries
+accelerate
+trl
+peft
+datasets
+
+# Tokenizers & model hub
+transformers
+sentencepiece
+huggingface_hub
+hf_transfer
+
+# Diffusion support
+diffusers
+
+# Utility packages
+numpy
+packaging
+protobuf
+psutil
+tqdm
+tyro
+wheel
+
+# Unsloth itself (with CUDA/Torch extras)
+unsloth==0.2.0

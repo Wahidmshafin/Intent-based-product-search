@@ -1,0 +1,53 @@
+# mlops/Dockerfile-airflow
+# Use BuildKit syntax line below if you plan to enable caching mounts
+# syntax=docker/dockerfile:1.4
+
+FROM python:3.11-slim-bullseye
+
+# 1. System dependencies (CMake, Ninja, OpenMP, libcurl, etc.)
+RUN apt-get update && apt-get install -y \
+      build-essential \
+      git \
+      libpq-dev \
+      cmake \
+      libgomp1 \
+      ninja-build \
+      curl \
+      libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Install Airflow 2.8.3 (Python 3.11 constraints)
+ENV AIRFLOW_VERSION=2.8.3 \
+    AIRFLOW_HOME=/opt/airflow
+RUN pip install "apache-airflow==${AIRFLOW_VERSION}" \
+    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-3.11.txt"
+
+# 3. Copy the entire mlops directory (including llama.cpp submodule)
+COPY . /opt/ml-pipeline
+
+# 4. Build llama.cpp with CMake
+RUN cmake -S /opt/ml-pipeline/llama.cpp -B /opt/ml-pipeline/llama.cpp/build \
+ && cmake --build /opt/ml-pipeline/llama.cpp/build --parallel "$(nproc)"
+
+# 5. PIP settings: longer timeout & retries for huge wheels
+ENV PIP_DEFAULT_TIMEOUT=1000 \
+    PIP_RETRIES=5
+
+# 6. Create and populate the Unsloth venv
+RUN python -m venv /opt/ml-pipeline/envs/unsloth \
+ && /opt/ml-pipeline/envs/unsloth/bin/pip install --upgrade pip \
+ \
+ # 6a. FIRST install the heavy CUDA wheels (torch / torchvision / triton)
+ && /opt/ml-pipeline/envs/unsloth/bin/pip install --no-cache-dir \
+      --default-timeout=1000 --retries=5 \
+      torch torchvision triton ninja \
+ \
+ # 6b. THEN install the remainder of Unsloth deps, disabling build-isolation
+ #     so flash-attn & xformers can find torch during their build step
+ && /opt/ml-pipeline/envs/unsloth/bin/pip install --no-cache-dir \
+      --default-timeout=1000 --retries=5 \
+      --no-build-isolation \
+      -r /opt/ml-pipeline/envs/requirements_unsloth.txt
+
+# 7. Put the venv’s bin directory first on PATH
+ENV PATH="/opt/ml-pipeline/envs/unsloth/bin:${PATH}"

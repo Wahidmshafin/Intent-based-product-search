@@ -1,0 +1,10 @@
+pip
+transformers 
+datasets==2.15.0 
+peft 
+trl 
+bitsandbytes
+accelerate 
+fsspec
+numpy<2.0
+unsloth
