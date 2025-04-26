@@ -5,8 +5,6 @@ services:
       dockerfile: ./Dockerfile
     image: backend:${BACKEND_VERSION:-latest}
     restart: always
-    env_file:
-      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -14,6 +12,7 @@ services:
         condition: service_healthy
     environment:
       BACKEND_HOST: 0.0.0.0
+      BACKEND_RELOAD: True
       BACKEND_DB_HOST: backend-db
       BACKEND_DB_PORT: 5432
       BACKEND_DB_USER: backend
