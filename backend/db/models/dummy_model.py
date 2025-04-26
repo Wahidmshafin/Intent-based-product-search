@@ -17,9 +17,12 @@ class ProductTable(Base):
     """Product Table"""
     __tablename__ = "product_table"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    colorname: Mapped[str] = mapped_column(String())
-    description: Mapped[str] = mapped_column(String())
-    name: Mapped[str] = mapped_column(String())
-    fulldescription: Mapped[str] = mapped_column(String())
+    new_id: Mapped[int] = mapped_column()
+    category:Mapped[str] = mapped_column(String(),nullable=True)
+    brand:Mapped[str] = mapped_column(String(),nullable=True)
+    description: Mapped[str] = mapped_column(String(),nullable=True)
+    title: Mapped[str] = mapped_column(String(),nullable=True)
+    price: Mapped[str] = mapped_column(String(),nullable=True)
+    spec: Mapped[str] = mapped_column(String(),nullable=True)
     embedding: Mapped[list[float]] = mapped_column(Vector(768))
     

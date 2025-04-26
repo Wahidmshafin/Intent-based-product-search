@@ -14,13 +14,13 @@ class ProductDAO:
     def __init__(self, session: AsyncSession = Depends(get_db_session)) -> None:
         self.session = session
 
-    async def add_product(self, colorname: str, description: str, name: str, fulldescription: str, embedding: list[float]) -> None:
+    async def add_product(self, new_id:int, category: str, brand: str, description: str, title: str, price: str, spec: str, embedding: list[float]) -> None:
         """
         Add single dummy to session.
 
         :param name: name of a dummy.
         """
-        self.session.add(ProductTable(colorname=colorname, description = description, name = name, fulldescription = fulldescription, embedding = embedding))
+        self.session.add(ProductTable(new_id=new_id, category = category, brand = brand, description = description, title=title, price=price, spec=spec, embedding = embedding))
 
     async def get_all_products(self, limit: int) -> List[ProductTable]:
         """
@@ -51,13 +51,13 @@ class ProductDAO:
         keyword_search AS (
             SELECT
                 id,
-                RANK () OVER (ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC) AS rank
+                RANK () OVER (ORDER BY ts_rank_cd(to_tsvector('english', description), query) DESC) AS rank
             FROM
                 product_table,
                 websearch_to_tsquery('english', :keywords) AS query
             WHERE
-                to_tsvector('english', fulldescription) @@ query
-            ORDER BY ts_rank_cd(to_tsvector('english', fulldescription), query) DESC 
+                to_tsvector('english', description) @@ query
+            ORDER BY ts_rank_cd(to_tsvector('english', description), query) DESC 
             LIMIT :limit
         ),
         combined_results AS (
@@ -70,8 +70,10 @@ class ProductDAO:
         )
         SELECT
             p.id,
-            p.name,           
-            p.fulldescription
+            p.title,
+            p.category,
+            p.brand,           
+            p.description
         FROM combined_results cr
         JOIN product_table p ON cr.id = p.id 
         ORDER BY cr.score DESC
