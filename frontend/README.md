@@ -1,9 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Here’s a professionally written `README.md` for your Next.js project:
 
-## Getting Started
+---
 
-First, run the development server:
+# Intent-Based Product Search (Frontend)
 
+A modern, performant frontend for an intent-based product search system, built with **Next.js** and optimized for scalability. This project leverages Next.js's App Router, server-side rendering, and advanced styling for an intuitive user experience.
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js `v18+`
+- npm / yarn / pnpm / bun
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Wahidmshafin/Intent-based-product-search.git
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+### Development
+Start the development server:
 ```bash
 npm run dev
 # or
@@ -13,24 +40,63 @@ pnpm dev
 # or
 bun dev
 ```
+Access the application at:  
+👉 [http://localhost:3000](http://localhost:3000)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠️ Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Key directories:
+```
+frontend/
+├── app/                  # App Router (pages, layouts, routes)
+├── components/           # Reusable UI components
+├── lib/                  # Utilities & helpers
+├── styles/               # Global CSS/Sass
+├── public/               # Static assets
+└── package.json
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✨ Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js App Router**: File-based routing with optimized navigation.
+- **Performance Optimizations**:
+  - Automatic font optimization with `next/font` ([Geist](https://vercel.com/font)).
+  - Built-in image optimization.
+- **Modern Styling**: CSS Modules, Tailwind (if applicable), or styled-jsx.
+- **TypeScript Support** (if configured): Type-safe development.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📚 Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Next.js Resources
+- [Official Documentation](https://nextjs.org/docs) – Learn about Next.js features.
+- [Interactive Tutorial](https://nextjs.org/learn) – Hands-on Next.js guide.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Deployment
+Deploy seamlessly on [Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) (recommended) or other platforms:
+```bash
+npm run build  # Generates a production-ready build
+```
+
+---
+
+## 🤝 Contributing
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a **Pull Request**.
+
+---
+
+## 📄 License
+[MIT](LICENSE) © [Your Name/Organization]
+
+---
+
+Let me know if you'd like to add specific technologies (e.g., Redux, API integration) or adjust the tone further!
