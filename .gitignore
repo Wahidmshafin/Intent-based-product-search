@@ -125,7 +125,7 @@ venv.bak/
 .spyproject
 
 # Rope project settings
-.ropeproject
+.ropeproject4
 
 # mkdocs documentation
 /site
@@ -143,3 +143,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+node_modules/
+.next/
