@@ -1,0 +1,81 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: backend
+  name: backend-db
+spec:
+  selector:
+    matchLabels:
+      app: backend-db
+  template:
+    metadata:
+      labels:
+        app: backend-db
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: db-persistent-volume-claim
+      containers:
+        - name: database
+          image: pgvector/pgvector:pg17
+          startupProbe:
+            exec:
+              command: ["pg_isready -U backend"]
+            failureThreshold: 40
+            periodSeconds: 5
+            timeoutSeconds: 3
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          env:
+            - name: POSTGRES_DB
+              value: "backend"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credential
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credential
+                  key: postgres_password
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credential
+  namespace: backend
+data:
+  postgres_user: YmFja2VuZAo=
+  postgres_password: YmFja2VuZAo=  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: backend
+  name: "backend-db-service"
+spec:
+  selector:
+    app: backend-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-persistent-volume-claim
+  namespace: backend
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---

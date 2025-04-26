@@ -1,0 +1,97 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: "backend"
+  name: "backend-ollama"
+spec:
+  selector:
+    matchLabels:
+      app: "ollama"
+  template:
+    metadata:
+      labels:
+        app: "ollama"
+    spec:
+      volumes:
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: ollama-model-persistent-volume-claim
+        - name: file-storage
+          persistentVolumeClaim:
+            claimName: ollama-file-persistent-volume-claim
+        - name: script
+          configMap:
+            name: ollama-script
+            defaultMode: 0755
+      containers:
+        - name: ollama
+          image: ollama/ollama:latest
+          volumeMounts:
+            - name: model-storage
+              mountPath: /root/.ollama
+              subPath: ollama-model
+            - name: file-storage
+              mountPath: /model_files
+              subPath: ollama-file
+            - name: script
+              mountPath: /model_files/run_ollama.sh
+              subPath: run_ollama.sh
+          # command: ["/bin/sh", "/model_files/run_ollama.sh"]
+          ports:
+            - containerPort: 11434
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-model-persistent-volume-claim
+  namespace: backend
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-file-persistent-volume-claim
+  namespace: backend
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: "backend"
+  name: "ollama-service"
+spec:
+  selector:
+    app: "ollama"
+  ports:
+    - port: 11434
+      targetPort: 11434
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ollama-script
+data:
+  run_ollama.sh: |
+    #!/bin/bash
+
+    echo "Starting Ollama server..."
+    ollama serve &
+    # Wait for Ollama HTTP API to respond
+    echo "Waiting for Ollama server to be active..."
+    sleep 1
+
+    ollama create ecommerce-ner-model -f model_files/Modelfile
+    ollama run ecommerce-ner-model
+
