@@ -6,10 +6,9 @@ Currently the program directly download data from the hugging face dataset: http
 
 We used hybrid search with reciprocal ranking to find out the best matching search results.
 
-![Search Query](.\img\query.png)
+![Search Query](https://github.com/user-attachments/assets/c7a1074a-fdc7-4236-838a-1f47216d94be)
 
-![Search Result](.\img\result.png)
-
+![Search Result](https://github.com/user-attachments/assets/d84b8a5e-2b7c-4f87-989f-7647e1c52c19)
 This project was generated using fastapi_template.
 
 ## Poetry
