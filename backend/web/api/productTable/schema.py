@@ -1,11 +1,11 @@
 from pydantic import BaseModel, ConfigDict
-from backend.db.models.dummy_model import ProductTable
+from backend.db.models.all_model import ProductTable
 from typing import Optional
 class ProductUpload(BaseModel):
     """
-    DTO for dummy models.
+    DTO for Product models.
 
-    It returned when accessing dummy models from the API.
+    It returned when accessing product models from the API.
     """
 
     response: str

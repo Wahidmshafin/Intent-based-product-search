@@ -5,20 +5,20 @@ from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.db.dependencies import get_db_session
-from backend.db.models.dummy_model import ProductTable
+from backend.db.models.all_model import ProductTable
 
 
 class ProductDAO:
-    """Class for accessing dummy table."""
+    """Class for accessing Product table."""
 
     def __init__(self, session: AsyncSession = Depends(get_db_session)) -> None:
         self.session = session
 
     async def add_product(self, new_id:int, category: str, brand: str, description: str, title: str, price: str, spec: str, embedding: list[float]) -> None:
         """
-        Add single dummy to session.
+        Add single product to session.
 
-        :param name: name of a dummy.
+        :param name: product informations.
         """
         self.session.add(ProductTable(new_id=new_id, category = category, brand = brand, description = description, title=title, price=price, spec=spec, embedding = embedding))
 

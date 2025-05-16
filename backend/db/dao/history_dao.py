@@ -6,20 +6,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
 
 from backend.db.dependencies import get_db_session
-from backend.db.models.dummy_model import HistoryTable
+from backend.db.models.all_model import HistoryTable
 
 
 class HistoryDAO:
-    """Class for accessing dummy table."""
+    """Class for accessing History table."""
 
     def __init__(self, session: AsyncSession = Depends(get_db_session)) -> None:
         self.session = session
 
     async def add_history(self,query: str, result: list[int], feedback:int) -> None:
         """
-        Add single dummy to session.
+        Add single history to session.
 
-        :param name: name of a dummy.
+        :param query: user query.
+        :param result: search result.
+        :param feedback: user feedback.
         """
         self.session.add(HistoryTable(query=query, result = result, feedback = feedback))
 

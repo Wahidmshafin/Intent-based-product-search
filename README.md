@@ -1,5 +1,15 @@
 # Intent Based Product Search
 
+A advanced Product search engine, which fetch the best search results according to user's intent. It use locally fine tuned LLM models to optimize the user query to get the best results.
+
+Currently the program directly download data from the hugging face dataset: https://huggingface.co/datasets/wdc/products-2017 
+
+We used hybrid search with reciprocal ranking to find out the best matching search results.
+
+![Search Query](img\query.png)
+
+![Search Result](img\result.png)
+
 This project was generated using fastapi_template.
 
 ## Poetry
