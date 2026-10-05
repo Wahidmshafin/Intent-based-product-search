@@ -40,7 +40,7 @@ async def create_product_models(
             price = example["price_left"],
             spec = example["specTableContent_left"],
             embedding = search_pipeline.generate_embedding(
-    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+    (f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}")[:1500]
 )
         )
         print(cnt)
@@ -57,7 +57,7 @@ async def create_product_models(
             price = example["price_left"],
             spec = example["specTableContent_left"],
             embedding = search_pipeline.generate_embedding(
-    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+    (f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}")[:1500]
 )
         )
         print(cnt)
@@ -74,7 +74,7 @@ async def create_product_models(
             price = example["price_left"],
             spec = example["specTableContent_left"],
             embedding = search_pipeline.generate_embedding(
-    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+    (f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}")[:1500]
 )
         )
         print(cnt)
@@ -92,7 +92,7 @@ async def create_product_models(
             price = example["price_left"],
             spec = example["specTableContent_left"],
             embedding = search_pipeline.generate_embedding(
-    f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}"
+    (f"category:{str(example['category_left'])}\nbrand:{str(example['brand_left'])}\ntitle:{str(example['title_left'])}\ndescription:{str(example['description_left'])}")[:1500]
 )
         )
         print(cnt)

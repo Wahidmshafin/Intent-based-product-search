@@ -12,15 +12,15 @@ class ProductUpload(BaseModel):
 
 class Products(BaseModel):
     """Products"""
-    id: int
-    new_id: int
-    category: str
-    brand: str
-    description: str
-    title: str
-    price: str
-    spec: str
-    embedding: list[float]
+    id: Optional[int] = None
+    new_id: Optional[int] = None
+    category: Optional[str] = None
+    brand: Optional[str] = None
+    description: Optional[str] = None
+    title: Optional[str] = None
+    price: Optional[str] = None
+    spec: Optional[str] = None
+    embedding: list[float] | None
     
 
 # class ProductItem(BaseModel):

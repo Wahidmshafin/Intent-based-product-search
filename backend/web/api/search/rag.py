@@ -26,7 +26,7 @@ class SearchPipeline:
             model="ecommerce-ner-model",
             temperature=0,
             keep_alive= -1,
-            base_url="http://ollama:11434" #http://localhost:11435
+            base_url="http://ollama:11434" #http://localhost:11434
         )
         self.fine_promt =ChatPromptTemplate.from_messages(
             [

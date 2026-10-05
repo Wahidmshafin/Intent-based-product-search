@@ -42,9 +42,9 @@ class Settings(BaseSettings):
     # Variables for the database
     db_host: str = "localhost"
     db_port: int = 5432
-    db_user: str = "backend"
-    db_pass: str = "backend"
-    db_base: str = "admin"
+    db_user: str = "postgres"
+    db_pass: str = "root"
+    db_base: str = "postgres"
     db_echo: bool = False
 
     # Variables for Redis

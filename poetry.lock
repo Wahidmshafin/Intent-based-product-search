@@ -811,6 +811,18 @@ testing = ["covdefaults (>=2.3)", "coverage (>=7.6.10)", "diff-cover (>=9.2.1)",
 typing = ["typing-extensions (>=4.12.2) ; python_version < \"3.11\""]
 
 [[package]]
+name = "fnctl"
+version = "0.1.2"
+description = "Self-hosted functions (Lambda-like) runtime and CLI"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "fnctl-0.1.2-py3-none-any.whl", hash = "sha256:23eead17fa2681aafb7574eba4bf4d49ee13e931a29f39dd3e88958959d3ba83"},
+    {file = "fnctl-0.1.2.tar.gz", hash = "sha256:0a3291ff4ecbbdf14e26662cd8beb3a1699d7db3b481307959c95c207f47765b"},
+]
+
+[[package]]
 name = "frozenlist"
 version = "1.6.0"
 description = "A list-like structure which implements collections.abc.MutableSequence"
@@ -3845,4 +3857,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">3.9.1,<4"
-content-hash = "ae41d18f4c15fec65d65c8aad01479569fed69b5fba55a8f1c2ad9ad7b199eba"
+content-hash = "1bae4d1d5ccd2263907dbe316e48d292140b8178dba315177ff46c7b6f1cc79c"
